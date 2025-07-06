@@ -4,7 +4,7 @@ import { FlightData, WeatherData, MarketInsight, PriceAnalysis } from '../types'
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-const backendBaseURL = 'http://localhost:5000'; // Or your deployed backend URL
+const backendBaseURL = 'http://localhost:5000';
 
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
@@ -29,7 +29,7 @@ const AIRPORT_DETAILS: { [key: string]: { city: string; country: string; name: s
   'YBTL': { city: 'Townsville', country: 'Australia', name: 'Townsville Airport' }
 };
 
-// ✅ Use backend API to get flights
+// backend API to get flights
 
 export const fetchFlightData = async (airport: string = 'SYD'): Promise<FlightData[]> => {
   try {
