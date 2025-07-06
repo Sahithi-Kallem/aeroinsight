@@ -11,6 +11,23 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 
+// Helper: Map AviationStack status to readable format
+function determineFlightStatus(status) {
+  if (!status) return 'Unknown';
+
+  switch (status.toLowerCase()) {
+    case 'scheduled': return 'Scheduled';
+    case 'active':
+    case 'en-route': return 'In Flight';
+    case 'landed': return 'Arrived';
+    case 'cancelled': return 'Cancelled';
+    case 'incident':
+    case 'diverted': return 'Disrupted';
+    default: return 'Unknown';
+  }
+}
+
+// Route: Fetch real-time flight data
 app.get('/api/flights', async (req, res) => {
   const airport = (req.query.airport || 'SYD').toUpperCase();
 
@@ -40,7 +57,7 @@ app.get('/api/flights', async (req, res) => {
       },
       aircraft: f.aircraft?.model || 'N/A',
       status: determineFlightStatus(f.flight_status),
-      price: undefined
+      price: undefined // pricing requires commercial API
     }));
 
     res.json({ flights });
@@ -50,4 +67,5 @@ app.get('/api/flights', async (req, res) => {
   }
 });
 
+// Start server
 app.listen(PORT, () => console.log(`Server @ http://localhost:${PORT}`));
